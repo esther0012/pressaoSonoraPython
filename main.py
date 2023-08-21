@@ -65,26 +65,20 @@ def calcular_derivada_numerica(valores, h):
         derivada = (valores.iloc[i + 1] - valores.iloc[i - 1]) / (2 * h)
         derivadas.append(derivada)
     return derivadas
-
-# Coluna de dados para calcular a derivada (substitua pelo nome real da coluna)
+# Coluna de dados para calcular a derivada
 coluna_desejada = 'Canal 1'
-
 # Intervalo para a diferença finita central
-h = 1  # Ajuste conforme necessário
-
+h = 1
 # Calcular a derivada numérica
 derivadas = calcular_derivada_numerica(dados_excel[coluna_desejada], h)
-
 # Redefinir os índices do DataFrame após a ordenação
 dados_excel.reset_index(drop=True, inplace=True)
-
 # Criar uma tabela com os resultados
 tabela_resultado = pd.DataFrame({
     'Período de início': dados_excel['Período de início'][1:-1],  # Ignorar os primeiros e últimos pontos
     'Valor': dados_excel[coluna_desejada][1:-1],  # Ignorar os primeiros e últimos pontos
     'Derivada Numérica': derivadas
 })
-
 # Exibir a tabela de resultados
 print(tabela_resultado)
 
@@ -150,7 +144,9 @@ amplitude_amostral = dados_excel[coluna_desejada].max() - dados_excel[coluna_des
 
 print("Amplitude Amostral:", amplitude_amostral)
 
-numero_classes = int(1 + pd.Series(dados_excel[coluna_desejada]).apply(lambda x: 1 + 3.322 * np.log10(len(dados_excel[coluna_desejada]))).values[0])
+numero_classes = int(1 + np.log2(len(dados_excel[coluna_desejada])))
+
+print("Número de Classes:", numero_classes)
 
 # Criar o histograma
 plt.figure(figsize=(10, 6))
